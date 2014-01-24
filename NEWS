@@ -1,0 +1,8 @@
+2014-01-24
+RnaSeqSampleSize 1.1.0:
+(1) A more detail parameter to sample size table was provided to make sample size estimation faster;
+(2) An estimated time to perform sample size estimation will be displayed;
+(3) A bug fixed when sample size N equals to 1;
+
+2014-01-10
+RnaSeqSampleSize 1.0.0: First version.
