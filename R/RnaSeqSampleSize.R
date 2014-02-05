@@ -56,8 +56,6 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 		getPvalue<-function(yy=yyStore,...) {
 			est_pvalue_store_get_power3(yy=yyStore,...)
 		}
-		#		temp<-est_pvalue(x1=y,x0=x,n=n, phi=phi_0, w=w)
-		#		temp<-est_pvalue_store_get_power3(x1=y,x0=x,yy=yyStore)
 	}
 	
 	aNRow<-length(q1_l:q1_u)

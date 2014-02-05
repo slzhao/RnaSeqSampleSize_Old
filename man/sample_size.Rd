@@ -4,7 +4,7 @@
 \usage{
 sample_size(m = 10000, m1 = 100, power = 0.8, f = 0.1, w = 1,
   rho = 2, lambda0 = 5, phi_0 = 1, nTable = system.file("extdata",
-  "nTable.csv", package = "RnaSeqSampleSize"))
+  "nTable.csv", package = "RnaSeqSampleSize"), showMessage = T)
 }
 \arguments{
   \item{m}{Total number of genes for testing.}
@@ -27,6 +27,9 @@ sample_size(m = 10000, m1 = 100, power = 0.8, f = 0.1, w = 1,
 
   \item{nTable}{A table included the estitameted sample
   numbers (N) with different parameters.}
+
+  \item{showMessage}{Logical. Display the message in the
+  estimation process.}
 }
 \description{
 A function to estitamete the sample size for differential
