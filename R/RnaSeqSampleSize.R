@@ -41,10 +41,12 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 	q1_u<-qnbinom(1-error, size=n/phi_1, mu=n*mu1)
 	q1_l<-qnbinom(error, size=n/phi_1, mu=n*mu1)
 	
-	a<-matrix(nrow=length(q1_l:q1_u),ncol=length(q0_l:q0_u),F)
+	a<-0
+	temp1<-dnbinom(q1_l:q1_u, mu=(n*mu1), size=n/phi_1)
+	temp2<-dnbinom(q0_l:q0_u, mu=(n*mu0), size=n/phi_0)
 	if (max(q0_u,q0_l,q1_u,q1_l)>=10000) { #Method2, doesn't store every pvalue but do it every time
-		getPvalue<-function(n=n, phi=phi_0, w=w,...) {
-			est_pvalue(n=n, phi=phi_0, w=w,...)
+		getPvalue<-function(x1,x0,...) {
+			est_pvalue(x1,x0,n=n, phi=phi_0, w=w,...)
 		}
 	} else { #Method1, store every pvalue
 		yMin<-min(q1_l,q1_u)+min(q0_l,q0_u)
@@ -53,8 +55,8 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 		for (y in yMin:yMax) {
 			yyStore[[y+1]]<-est_pvalue_store(y,n=n, phi=phi_0, w=w)
 		}
-		getPvalue<-function(yy=yyStore,...) {
-			est_pvalue_store_get_power3(yy=yyStore,...)
+		getPvalue<-function(x1,x0,yy=yyStore,...) {
+			est_pvalue_store_get_power3(x1,x0,yy=yyStore,...)
 		}
 	}
 	
@@ -69,7 +71,7 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 			if (x>y) {break;}
 			temp<-getPvalue(x1=y,x0=x)
 			if (temp<=alpha) {
-				a[(y-q1_l+1):aNRow,(x-q0_l+1)]<-T
+				a<-a+sum(temp1[(y-q1_l+1):aNRow]*temp2[(x-q0_l+1)])
 				q1_l_loop<-y
 				break;
 			}
@@ -84,16 +86,13 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 			if (x<y) {break;}
 			temp<-getPvalue(x1=y,x0=x)
 			if (temp<=alpha) {
-				a[(y-q1_l+1),(x-q0_l+1):aNCol]<-T
-				q0_l_loop<-x
+				a<-a+sum(temp1[(y-q1_l+1)]*temp2[(x-q0_l+1):aNCol])
+			q0_l_loop<-x
 				break;
 			}
 		}
 	}
-	temp<-dnbinom(q1_l:q1_u, mu=(n*mu1), size=n/phi_1)
-	b<-apply(a, 2, function(x) x*temp )
-	temp<-dnbinom(q0_l:q0_u, mu=(n*mu0), size=n/phi_0)
-	power<-sum( apply(b, 1, function(x) x*temp ) )
+	power<-a
 	return(power-(1-beta))
 }
 
@@ -120,9 +119,10 @@ est_power3<-function(n, w=1, rho=2.0, lambda0=5, phi_0=1, beta=0.2, alpha=0.05, 
 ##' #Estitamete sample size for parameters not stored, may use two minutes.
 ##' vm<-30000;vm1<-1000;vpower<-0.8;vf<-0.05;vw<-1.0;vrho<-1.5;vlambda0<-5;vphi_0<-0.5
 ##' sample_size(m=vm, m1=vm1, power=vpower, f=vf, w=vw, rho=vrho, lambda0=vlambda0, phi_0=vphi_0)
-sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, phi_0=1,nTable=system.file("extdata", "nTable.csv", package = "RnaSeqSampleSize"),showMessage=T){
+sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, phi_0=1,nTable=system.file("extdata", "nTable.csv", package = "RnaSeqSampleSize"),showMessage=F){
 	r1<-m1 * power
 	beta<-1-power
+	step.power<-5
 	
 	alpha_star<-r1*f/((m-m1)*(1-f))
 	z_alpha<-qnorm(1-alpha_star/2, lower.tail=T)
@@ -134,7 +134,7 @@ sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, 
 	if (file.exists(nTable)) {
 		nTable<-read.csv(nTable,header=T)
 		n_near<-find_near_N(nTable,rho=rho,phi0=phi_0,lambda0=lambda0,f=f,m=m, m1=m1, power=power,showMessage=showMessage)
-		if (length(n_near)!=0) {
+		if (n_near!="") {
 			if (length(grep("M",n_near))!=0) {
 				n_Exact<-as.numeric(gsub("M","",n_near))
 				return(n_Exact)
@@ -154,9 +154,14 @@ sample_size<-function(m=10000, m1=100, power=0.8, f=0.1, w=1, rho=2, lambda0=5, 
 	if (p1>0) {
 		return(start.point)
 	} else {
+		if (p1<=0.8) {
+			step.power<-7
+		} else if (p1<=0.6) {
+			step.power<-6
+		}
 		n_Exact<-uniroot.integer(est_power3, c(start.point, end.point), w=w, rho=rho, 
 				lambda0=lambda0, phi_0=phi_0, beta=beta, alpha=alpha_star, pos.side=T,
-				step.up=T, step.power=5,print.steps=showMessage)$root  
+				step.up=T, step.power=step.power,print.steps=showMessage)$root  
 		return(n_Exact)
 	}
 }
@@ -186,11 +191,11 @@ find_near_N<-function(nTable,rho,phi0,lambda0,f,power,m,m1,showMessage=showMessa
 	m1_near<-find_near(nTable[,7],m1,"larger")
 	n_near<-nTable[which(nTable[,1]==rho_near & nTable[,2]==phi0_near & nTable[,3]==lambda0_near & nTable[,4]==f_near & nTable[,5]==power_near & nTable[,6]==m_near & nTable[,7]==m1_near),8]
 	if (length(n_near)==0) {
-		n_near<-""
+		n_near<-1
 		if (showMessage) {
 			cat("RnaSeqSampleSize can't find nearest sample size in stored N table. Will estimate sample size N from N=1.\n")
 		}
-	}	else if (as.character(rho_near)==as.character(rho) & as.character(phi0_near)==as.character(phi0) & as.character(lambda0_near)==as.character(lambda0) & as.character(f_near)==as.character(f) & as.character(power_near)==as.character(power) & as.character(m_near)==as.character(m) & as.character(m1_near)==as.character(m1)) {
+	} else if (as.character(rho_near)==as.character(rho) & as.character(phi0_near)==as.character(phi0) & as.character(lambda0_near)==as.character(lambda0) & as.character(f_near)==as.character(f) & as.character(power_near)==as.character(power) & as.character(m_near)==as.character(m) & as.character(m1_near)==as.character(m1)) {
 		n_near<-paste("M",n_near,sep="")
 	} else {
 		estTime<-as.integer(nTable[which(nTable[,1]==rho_near & nTable[,2]==phi0_near & nTable[,3]==lambda0_near & nTable[,4]==f_near & nTable[,5]==power_near & nTable[,6]==m_near & nTable[,7]==m1_near),9])

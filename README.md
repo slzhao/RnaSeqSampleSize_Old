@@ -15,11 +15,14 @@ RnaSeqSampleSize package is based on the paper **Sample size calculation based o
 
 <a name="Change"/>
 # Change log #
+2014-02-17
+RnaSeqSampleSize 1.1.3:
+ * The algorithm was improved to decrease the memory usage;
 
 2014-02-04
 RnaSeqSampleSize 1.1.2:
- * (1) A more detail parameter to sample size table was provided;
- * (2) The algorithm was improved to decrease the running time and memory usage;
+ * A more detail parameter to sample size table was provided;
+ * The algorithm was improved to decrease the running time and memory usage;
 
 2014-01-27
 RnaSeqSampleSize 1.1.1:
@@ -55,10 +58,10 @@ RnaSeqSampleSize package requires ssanv packages. You can enter R and use follow
 
 Then you can enter R and use following R codes to install RnaSeqSampleSize in Windows or Linux.
 	
-	#Install RnaSeqSampleSize in Windows system, assume RnaSeqSampleSize_1.1.2.zip file was in current directory
-	install.packages("RnaSeqSampleSize_1.1.2.zip")
-	#Install RnaSeqSampleSize in Linux system, assume RnaSeqSampleSize_1.1.2.tar.gz file was in current directory
-	install.packages("RnaSeqSampleSize_1.1.2.tar.gz")
+	#Install RnaSeqSampleSize in Windows system, assume RnaSeqSampleSize_1.1.3.zip file was in current directory
+	install.packages("RnaSeqSampleSize_1.1.3.zip")
+	#Install RnaSeqSampleSize in Linux system, assume RnaSeqSampleSize_1.1.3.tar.gz file was in current directory
+	install.packages("RnaSeqSampleSize_1.1.3.tar.gz")
 
 <a name="example"/>
 # Example #
