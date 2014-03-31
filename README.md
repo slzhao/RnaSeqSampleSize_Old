@@ -15,6 +15,15 @@ RnaSeqSampleSize package is based on the paper **Sample size calculation based o
 
 <a name="Change"/>
 # Change log #
+2014-03-16
+RnaSeqSampleSize 1.1.5:
+ * The C code for R function dnbinom was improved to decrease the running time greatly;
+ * The powers for different N in estimating sample size were returned to prepare power curve;
+
+2014-03-01
+RnaSeqSampleSize 1.1.4:
+ * A user friendly web interface was provided at http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/;
+
 2014-02-17
 RnaSeqSampleSize 1.1.3:
  * The algorithm was improved to decrease the memory usage;
