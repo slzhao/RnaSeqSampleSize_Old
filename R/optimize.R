@@ -1,0 +1,53 @@
+# TODO: Add comment
+# 
+# Author: zhaos
+###############################################################################
+
+##' optimize_parameter
+##' 
+##' A function to optimize the parameters in power or sample size estimation.
+##' 
+##' A function to optimize the parameters in power or sample size estimation.
+##' 
+##' @param fun function to be optimized, can be est_power, sample_size.
+##' @param opt1 parameter1 to be optimized.
+##' @param opt2 parameter2 to be optimized.
+##' @param opt1Value values of parameter1 to be optimized.
+##' @param opt2Value values of parameter2 to be optimized.
+##' @param main Title of optimization result figure.
+##' @param ... Other parameters for optimized funtion.
+##' @inheritParams est_power
+##' @importFrom heatmap3 heatmap3
+##' @importFrom matlab jet.colors
+##' @export
+##' @examples #Optimization for power estimation
+##' result<-optimize_parameter(fun=est_power,opt1="n",opt2="lambda0",opt1Value=c(3,5,10,15,20),opt2Value=c(1:5,10,20))
+##' #Optimization for sample size estimation
+##' \dontrun{
+##' result<-optimize_parameter(fun=sample_size,opt1="lambda0",opt2="phi0",opt1Value=c(1,3,5),opt2Value=c(1.5,2,3),power=0.8)
+##' }
+optimize_parameter<-function(fun=est_power,opt1,opt2,opt1Value,opt2Value,main,...){
+	if (missing(main)) {
+		if (identical(fun,est_power)) {
+			main<-"Optimization for Power Estimation"
+		} else if (identical(fun,sample_size)) {
+			main<-"Optimization for Sample Size Estimation"
+		}
+	}
+	argList<-list(...)
+	result<-NULL
+	for (opt1ValueEach in opt1Value) {
+		for (opt2ValueEach in opt2Value) {
+			argList[[opt1]]<-opt1ValueEach
+			argList[[opt2]]<-opt2ValueEach
+			result<-c(result,do.call(fun,argList))
+		}
+	}
+	result<-matrix(result,ncol=length(opt1Value))
+	colnames(result)<-opt1Value
+	row.names(result)<-opt2Value
+#	heatmap3(result,Colv=NA,Rowv=NA,xlab=opt1,ylab=opt2,scale="n",col=heat.colors(1024),cexCol=1,cexRow=1,las=1,main=main)
+	heatmap3(result,Colv=NA,Rowv=NA,xlab=opt1,ylab=opt2,scale="n",col=matlab::jet.colors(1000),cexCol=1,cexRow=1,las=1,main=main)
+	return(result)
+}
+

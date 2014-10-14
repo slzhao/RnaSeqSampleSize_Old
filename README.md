@@ -11,10 +11,21 @@ RnaSeqSampleSize
 Sample size calculation is an important issue in the experimental design of biomedical research. For RNA-seq experiments, the sample size calculation method based on the Poisson model has been proposed; however, when there are biological replicates, RNA-seq data could exhibit variation significantly greater than the mean (i.e. over-dispersion). The Poisson model cannot appropriately model the over-dispersion, and in such cases, the negative
 binomial model has been used as a natural extension of the Poisson model. Because the field currently lacks a sample size calculation method based on the negative binomial model for assessing differential expression analysis of RNA-seq data, we propose a method to calculate the sample size.
 
-RnaSeqSampleSize package is based on the paper **Sample size calculation based on exact test for assessing differential expression analysis in RNA-seq data**, which was published in BMC Bioinformatics. The paper can be accessed in [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/?term=24314022).
+RnaSeqSampleSize package is partly based on the paper **Sample size calculation based on exact test for assessing differential expression analysis in RNA-seq data**, which was published in BMC Bioinformatics. The paper can be accessed in [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/?term=24314022).
 
 <a name="Change"/>
 # Change log #
+2014-03-30
+RnaSeqSampleSize 1.1.7:
+ * An approximate estimation method was used to decrease the running time when average read count (lambda0) was larger than 20;
+ * A plotting power curve function plot_power_curve was provided;
+
+2014-03-19
+RnaSeqSampleSize 1.1.6:
+ * The code was improved to fit the web interface;
+ * The function est_power was provided for power estimation;
+ * A bug was fixed;
+
 2014-03-16
 RnaSeqSampleSize 1.1.5:
  * The C code for R function dnbinom was improved to decrease the running time greatly;
