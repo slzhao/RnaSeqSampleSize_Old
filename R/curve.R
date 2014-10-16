@@ -50,9 +50,11 @@ plot_power_curve<-function(result,cexLegend=1,type="b",xlab="Sample Size",ylab="
 ##' @inheritParams est_power
 ##' @inheritParams sample_size
 ##' @export
-##' @examples result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
+##' @examples \dontrun{
+##' result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
 ##' result2<-est_power_curve(n=63, f=0.05, rho=2, lambda0=5, phi0=0.5)
 ##' plot_power_curve(list(result1,result2))
+##' }
 est_power_curve<-function(n, w=1, rho=2, lambda0=5, phi0=1,alpha=0.05,f=0.05,...) {
 	if (n<=10) {
 		sampleSizeList<-1:n

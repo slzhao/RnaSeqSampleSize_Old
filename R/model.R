@@ -4,7 +4,7 @@
 ###############################################################################
 
 est_power_model<-function(n, w=1,k=1, rho=2, lambda0=5, phi0=1, beta=0.2, alpha=0.05, error=0.001){
-	model<-generateModel(lambda0=c(1,5,10),n=n, w=w,k=k, rho=rho, phi0=phi0,showMessage=F,alpha=alpha)
+	model<-generateModel(lambda0=c(1,5,10),n=n, w=w,k=k, rho=rho, phi0=phi0,showMessage=FALSE,alpha=alpha)
 	a<-modelPower(model,n=n,w=w,lambda0=lambda0,rho=rho, phi0=phi0)
 	return(a-(1-beta))
 }
@@ -48,7 +48,7 @@ modelPower<-function(model, n=10,w=1, rho=2, lambda0=5, phi0=1, error=0.001) {
 	return(a)
 }
 
-generateModel<-function(lambda0=c(1,5,10,20),n, w=1,k=1, rho=2.0, phi0=1, alpha=0.05, error=0.001,showMessage=F) {
+generateModel<-function(lambda0=c(1,5,10,20),n, w=1,k=1, rho=2.0, phi0=1, alpha=0.05, error=0.001,showMessage=FALSE) {
 	result<-NULL
 	X1<-NULL
 	X2<-NULL
@@ -64,14 +64,14 @@ generateModel<-function(lambda0=c(1,5,10,20),n, w=1,k=1, rho=2.0, phi0=1, alpha=
 	}
 	
 	if (showMessage) {
-		maxRange<-max(c(X1,X2,Y1,Y2),na.rm=T)
+		maxRange<-max(c(X1,X2,Y1,Y2),na.rm=TRUE)
 		maxRange<-maxRange+maxRange/5
 		plot(c(0,maxRange),c(0,maxRange),type="l",xlab="q0",ylab="q1",main=paste("n=",n,"; rho=",rho,"; phi=",phi0,sep=""),lty=2)
 		
 		for (i in 1:length(result)) {
 			temp1<-range(as.integer(colnames(result[[i]])))[c(1,2,2,1)]
 			temp2<-range(as.integer(row.names(result[[i]])))[c(2,2,1,1)]
-			temp3<-which(result[[i]]<=alpha,arr.ind=T)
+			temp3<-which(result[[i]]<=alpha,arr.ind=TRUE)
 			
 			temp3[,1]<-as.integer(temp3[,2])+as.integer(colnames(result[[i]])[1])
 			temp3[,2]<-as.integer(row.names(temp3))

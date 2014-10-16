@@ -25,7 +25,7 @@
 ##' @export
 ##' @examples power<-0.8;rho<-2;lambda0<-5;phi0<-0.5;f<-0.01
 ##' sample_size(power=power, f=f,rho=rho, lambda0=lambda0, phi0=phi0)
-sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=5, phi0=1,showMessage=F,storeProcess=F){
+sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=5, phi0=1,showMessage=FALSE,storeProcess=FALSE){
 	lambda0AppCut<-2000
 
 	r1<-m1 * power
@@ -53,8 +53,8 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 					step.up=T, step.power=step.power,print.steps=showMessage)
 		} else {
 			n_Exact<-uniroot.integer(est_power_root, c(start.point, end.point), w=w,k=k, rho=rho, 
-					lambda0=lambda0, phi0=phi0, beta=beta, alpha=alpha_star, pos.side=T,
-					step.up=T, step.power=step.power,print.steps=showMessage) 
+					lambda0=lambda0, phi0=phi0, beta=beta, alpha=alpha_star, pos.side=TRUE,
+					step.up=TRUE, step.power=step.power,print.steps=showMessage) 
 		}
 		if (storeProcess) {
 			n_Exact$process<-n_Exact$process[order(n_Exact$process[,1]),]
@@ -77,10 +77,12 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 ##' @inheritParams sample_size
 ##' @inheritParams est_power_distribtuion
 ##' @export
-##' @examples #Please note here the parameter repNumber was very small (5) to make the example code faster.
+##' @examples \dontrun{
+##' #Please note here the parameter repNumber was very small (5) to make the example code faster.
 ##' #We suggest repNumber should be at least set as 100 in real analysis.
 ##' sample_size_distribution(power=0.8,f=0.01,distributionObject="TCGA_READ",repNumber=5,showMessage=TRUE)
-sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rho=2,showMessage=F,storeProcess=F,distributionObject,libSize,minAveCount=5,maxAveCount=2000,repNumber=100,dispersionDigits=1,seed=123,selectedGenes,pathway,species="hsa"){
+##' }
+sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rho=2,showMessage=FALSE,storeProcess=FALSE,distributionObject,libSize,minAveCount=5,maxAveCount=2000,repNumber=100,dispersionDigits=1,seed=123,selectedGenes,pathway,species="hsa"){
 	
 	r1<-m1 * power
 	beta<-1-power
@@ -97,7 +99,7 @@ sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rh
 	
 	n_Exact<-uniroot.integer(est_power_distribtuion_sampleSize, c(start.point, end.point), w=w,k=k, rho=rho, 
 				beta=beta, alpha=alpha_star, dispersionDistribution=dispersionDistribution,countDistribution=countDistribution,
-				pos.side=T,	step.up=T, step.power=step.power,print.steps=showMessage)
+				pos.side=TRUE,	step.up=TRUE, step.power=step.power,print.steps=showMessage)
 
 	if (storeProcess) {
 			n_Exact$process<-n_Exact$process[order(n_Exact$process[,1]),]

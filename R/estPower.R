@@ -156,7 +156,7 @@ pCutoffMatrix<-function(x1,x0, n, phi, w=1,k=1,alpha=0.05,method=c("nb","beta"),
 			x0Min<-vector( "numeric",length=length(y))
 			
 			#d=(x0Cutoff-0.5)/y
-			d<-qbeta(alphaOneSide,alpha1,alpha2,lower.tail=F)
+			d<-qbeta(alphaOneSide,alpha1,alpha2,lower.tail=FALSE)
 			x0Min[largeCountInd]<-as.integer(d*y[largeCountInd]+0.5)+1
 			
 			if (!all(largeCountInd)) {
@@ -167,7 +167,7 @@ pCutoffMatrix<-function(x1,x0, n, phi, w=1,k=1,alpha=0.05,method=c("nb","beta"),
 		}
 	} else { #beta app
 		#d=(x0Cutoff-0.5)/y
-		d<-qbeta(alphaOneSide,alpha1,alpha2,lower.tail=F)
+		d<-qbeta(alphaOneSide,alpha1,alpha2,lower.tail=FALSE)
 		x0Min<-as.integer(d*y+0.5)+1
 	}
 

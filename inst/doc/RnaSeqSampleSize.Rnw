@@ -14,18 +14,6 @@
     linkcolor=blue,  %choose some color if you want links to stand out
 }
 
-\usepackage{listings}
-\usepackage{inconsolata}
-<<echo=FALSE>>=
-  options(width=60)
-
-  listing <- function(x, options) {
-    paste("\\begin{lstlisting}[breaklines=true]\n",
-      x, "\\end{lstlisting}\n", sep = "")
-  }
-  knit_hooks$set(source=listing, output=listing)
-@
-
 \begin{document}
 \title{RnaSeqSampleSize: Sample size estimation based on real RNA-seq data}
 \author{Shilin Zhao}
@@ -37,17 +25,15 @@ In this vignette, we demonstrated the application of RnaSeqSampleSize as an samp
 RnaSeqSampleSize package provides the following features:
 \begin{itemize}
   \item Estimation of sample size or power by single read count and dispersion;
-  \item Estimation of sample size or power by prior data;
-  \item Power curve visualization;
+  \item Estimation of sample size or power by prior real data;
+  \item Visualization of sample size and power by power curves;
   \item Optimization by power or sample size matrix;
 \end{itemize}
 \end{abstract}
 \newpage
-\tableofcontents
-\newpage
 
 \section{Introduction}
-Sample size estimation is the most important issue in the design of RNA sequencing experiments.However, thousands of genes are quantified and tested for differential expression simul-taneously in RNA-seq experiments. The false discovery rate for statistic tests should be controlled. At the same time, the thousands of genes have widely distributed read counts and dispersions, which were often estimated by experience or set at the most conservative values in previous methods. As a result, the estimated sample size will be inaccurate or over-estimated.
+Sample size estimation is the most important issue in the design of RNA sequencing experiments. However, thousands of genes are quantified and tested for differential expression simultaneously in RNA-seq experiments. The false discovery rate for statistic tests should be controlled. At the same time, the thousands of genes have widely distributed read counts and dispersions, which were often estimated by experience or set at the most conservative values in previous sample size estimation methods. As a result, the estimated sample size will be inaccurate or over-estimated.
 \\
 \\
 To solve these issues, we developed a sample size estimation method based on the distributions of gene read counts and dispersions from real data. Datasets from the user's preliminary experiments or the Cancer Genome Atlas (TCGA) can be used as reference. The read counts and their related dispersions will be selected randomly from the reference based on their distributions, and from that, the power and sample size will be estimated and summarized.
@@ -64,13 +50,13 @@ library(RnaSeqSampleSize)
 \subsubsection{Power estimation}
 For example, if we are estimating the power of finding significant genes for RNA-seq data with specified sample size, and we have the following parameters: 
 \begin{itemize}
-  \item Samples in each group: 63;
+  \item Number of samples in each group: 63;
   \item Minimal fold change between two groups: 2;
   \item Minimal average read counts: 5;
   \item Maximal dispersion: 0.5;
   \item False discovery rate (FDR): 0.01;
 \end{itemize}
-As a result, the estimated power is 0.8 by \emph{est\_power} function.
+As a result, the estimated power is 0.8 by \emph{est\_power} function. It means that we have 80\% probability to find the significant genes with 63 samples in each group.
 <<singlePower,echo=TRUE,tidy=TRUE,cache=T>>=
 example(est_power)
 @
@@ -83,34 +69,44 @@ For example, if we are estimating the sample size for RNA-seq data to achieve de
   \item Maximal dispersion: 0.5;
   \item False discovery rate (FDR): 0.01;
 \end{itemize}
-As a result, the estimated sample size is 63 by \emph{sample\_size} function.
+As a result, the estimated sample size is 63 by \emph{sample\_size} function. It means that if we want to have 80\% probability to find the significant genes, we need 63 samples in each group.
 <<singleSampleSize,each=TRUE,tidy=TRUE,cache=T>>=
 example(sample_size)
 @
-\subsection{Estimation of sample size or power by prior data}
+\subsection{Estimation of sample size or power by prior real data}
 \subsubsection{Power estimation}
 For example, if we are estimating the power of finding significant genes for RNA-seq data with specified sample size, and we have the following parameters:
 \begin{itemize}
-  \item Samples in each group: 65;
+  \item Number of samples in each group: 65;
   \item Minimal fold change between two groups: 2;
   \item Prior data: TCGA READ data;
   \item False discovery rate (FDR): 0.01;
 \end{itemize}
-<<distributionPower,echo=TRUE,tidy=TRUE,cache=T>>=
-example(est_power_distribtuion)
-@
 Here we demonstrated the power estimation by prior data in three different situations. 
 \begin{itemize}
   \item If we are intesested in all genes, we can use repNumber parameter to specify random number of genes to perform power estimation;
-  \item If we are only intesested in a list of genes, we can use selectedGenes parameter to specify the list of genes to perform power estimation; 
-  \item If we are only intesested a specified pathway, we can use pathway and species parameters to specify the genes in a pathway to perform power estimation. 
+<<distributionPower1,echo=TRUE,tidy=TRUE,cache=T>>=
+est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",repNumber=5)
+@
+Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
+  \item If we are only intesested in a list of genes, we can use selectedGenes parameter to specify the list of genes to perform power estimation;
+<<distributionPower2,echo=TRUE,tidy=TRUE,cache=T>>=
+#Power estimation based on some interested genes. We use storeProcess=TRUE to return the details for all selected genes.
+selectedGenes<-names(TCGA_READ$pseudo.counts.mean)[c(1,3,5,7,9,12:30)]
+powerDistribution<-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",selectedGenes=selectedGenes,minAveCount=1,storeProcess=TRUE)
+str(powerDistribution)
+mean(powerDistribution$power)
+@
+  \item If we are only intesested a specified pathway, we can use pathway and species parameters to specify the genes in a pathway to perform power estimation.
+<<distributionPower3,echo=TRUE,tidy=TRUE,cache=T>>=
+powerDistribution<-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",pathway="00010",minAveCount=1,storeProcess=TRUE)
+mean(powerDistribution$power)
+@
 \end{itemize}
-\\
-\\
 As a result, we use \emph{est\_power\_distribtuion} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.77 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
 
 \subsubsection{Sample size estimation}
-For example, if we are estimating the power of finding significant genes for RNA-seq data with specified sample size, and we have the following parameters:
+For example, if we are estimating the sample size for RNA-seq data to achieve desired power of finding significant genes, and we have the following parameters:
 \begin{itemize}
   \item Desired power of finding significant genes: 0.8;
   \item Minimal fold change between two groups: 2;
@@ -119,26 +115,29 @@ For example, if we are estimating the power of finding significant genes for RNA
 \end{itemize}
 As a result, we use \emph{sample\_size\_distribution} function and find the estimated sample size is 65 for random genes.
 <<distributionSampleSize,echo=TRUE,tidy=TRUE,cache=T>>=
-example(sample_size_distribution)
+sample_size_distribution(power=0.8,f=0.01,distributionObject="TCGA_READ",repNumber=5,showMessage=TRUE)
 @
+Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
 
 \subsection{Power curve visualization}
 For example, if we are going to compare the power of finding significant genes for different false discovery rate, and we have the following parameters:
 \begin{itemize}
-  \item Samples in each group: 63;
+  \item Number of samples in each group: 63;
   \item Minimal fold change between two groups: 2;
   \item Minimal average read counts: 5;
   \item Maximal dispersion: 0.5;
   \item False discovery rate (FDR): 0.01 and 0.05;
 \end{itemize}
 <<singlePowerCurves,echo=TRUE,tidy=TRUE,cache=T>>=
-example(est_power_curve)
+result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
+result2<-est_power_curve(n=63, f=0.05, rho=2, lambda0=5, phi0=0.5)
+plot_power_curve(list(result1,result2))
 @
 As a result, the relation between power and sample size can be estimated by \emph{est\_power\_curve} function and the power curves can be generated by \emph{ plot\_power\_curve} function.
 
 \subsection{Optimization by power or sample size matrix}
 For example, if the budget is limited, we need to balance the number of replications and sequence depth. We can use the \emph{optimize\_parameter} function to find the relation between sample size, read counts, and estimated power. And then the optimized parameters can be determined.
-<<optimazation,echo=TRUE,tidy=TRUE,cache=F>>=
+<<optimazation,echo=TRUE,tidy=TRUE,cache=T>>=
 example(optimize_parameter)
 @
 As a result, the estimated power distribution indicates that the number of replications plays a more significant role in determining the power than the number of read counts.

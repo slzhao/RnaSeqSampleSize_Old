@@ -27,8 +27,10 @@ est_power_curve(n, w = 1, rho = 2, lambda0 = 5, phi0 = 1,
 A function to estitamete the power curve for differential expression analysis of RNA-seq data.
 }
 \examples{
+\dontrun{
 result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
 result2<-est_power_curve(n=63, f=0.05, rho=2, lambda0=5, phi0=0.5)
 plot_power_curve(list(result1,result2))
+}
 }
 
