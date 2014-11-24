@@ -30,6 +30,9 @@ sample_size(power = 0.8, m = 20000, m1 = 200, f = 0.1, k = 1, w = 1,
 
 \item{storeProcess}{Logical. Store the power and n in sample size or power estimation process.}
 }
+\value{
+Estimate sample size or a list including parameters and sample size in the process.
+}
 \description{
 A function to estitamete the sample size for differential expression analysis of RNA-seq data.
 }

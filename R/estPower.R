@@ -6,6 +6,7 @@
 ##' 
 ##' @param n Numer of samples.
 ##' @param alpha alpha level.
+##' @return Estimate power
 ##' @inheritParams sample_size
 ##' @export
 ##' @examples n<-63;rho<-2;lambda0<-5;phi0<-0.5;f<-0.01
@@ -32,7 +33,7 @@ est_power_root_fdr<-function(power,n, w, rho, lambda0, phi0,fdr,m,m1,...) {
 	est_power_root(n=n, w=w, rho=rho, lambda0=lambda0, phi0=phi0, alpha=alpha_star,beta=beta,...)
 }
 
-est_power_root<-function(n,k=1, w=1, rho=2.0, lambda0=5, phi0=1, beta=0.2, alpha=0.05, bigCount=900,error=0.001,returnDetail=F){
+est_power_root<-function(n,k=1, w=1, rho=2.0, lambda0=5, phi0=1, beta=0.2, alpha=0.05, bigCount=900,error=0.001,returnDetail=FALSE){
 	mu0<-lambda0
 	mu1<-mu0*(rho*w)
 	phi1<-phi0

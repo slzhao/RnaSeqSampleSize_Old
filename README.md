@@ -43,9 +43,19 @@ After you have installed RnaSeqSampleSize package. You can enter R and use follo
 
 <a name="Change"/>
 # Change log #
+2014-11-18
+RnaSeqSampleSize 0.99.2:
+ * The vignette was switched to a BiocStyle;
+ * Other improvement based on the comments from Bioconductor reviewer;
+
+2014-10-19
+RnaSeqSampleSize 0.99.1:
+ * Parameter was used to determine the power of genes below minAveCount;
+ * Some recommendations from BiocCheck were improved;
+
 2014-10-16
 RnaSeqSampleSize 0.99.0:
-Submit to bioconductor.
+ * Submit to Bioconductor.
 
 2014-10-15
 RnaSeqSampleSize 0.5.0:
@@ -67,7 +77,7 @@ RnaSeqSampleSize 0.3.0:
 
 2014-06-01
 RnaSeqSampleSize 0.2.0:
-The function of estimation power or sample size by read count and dispersion distribution was imported and improved.
+ * The function of estimation power or sample size by read count and dispersion distribution was imported and improved.
 
 2014-03-30
 RnaSeqSampleSize 0.1.7:
@@ -87,11 +97,11 @@ RnaSeqSampleSize 0.1.5:
 
 2014-03-01
 RnaSeqSampleSize 0.1.4:
-A user friendly web interface was provided at http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/;
+ * A user friendly web interface was provided at http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/;
 
 2014-02-17
 RnaSeqSampleSize 0.1.3:
-The algorithm was improved to decrease the memory usage;
+ * The algorithm was improved to decrease the memory usage;
 
 2014-02-04
 RnaSeqSampleSize 0.1.2:
@@ -100,7 +110,7 @@ RnaSeqSampleSize 0.1.2:
 
 2014-01-27
 RnaSeqSampleSize 0.1.1:
-The algorithm was improved to decrease the running time greatly;
+ * The algorithm was improved to decrease the running time greatly;
 
 2014-01-24
 RnaSeqSampleSize 0.1.0:
@@ -110,5 +120,5 @@ RnaSeqSampleSize 0.1.0:
 
 2014-01-10
 RnaSeqSampleSize 0.0.1:
-First version.
+ * First version.
 

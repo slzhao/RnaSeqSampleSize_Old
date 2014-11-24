@@ -25,6 +25,9 @@ est_power(n, w = 1, rho = 2, lambda0 = 5, phi0 = 1, alpha = 0.05, f,
 
 \item{m1}{Expected number of prognostic genes.}
 }
+\value{
+Estimate power
+}
 \description{
 A function to estitamete the power for differential expression analysis of RNA-seq data.
 }

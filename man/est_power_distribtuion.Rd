@@ -43,6 +43,9 @@ est_power_distribtuion(n, f = 0.1, m = 10000, m1 = 100, w = 1,
 
 \item{storeProcess}{Logical. Store the power and n in sample size or power estimation process.}
 }
+\value{
+Average power or a list including count ,distribution and power for each gene.
+}
 \description{
 A function to estitamete the power for differential expression analysis of RNA-seq data.
 }

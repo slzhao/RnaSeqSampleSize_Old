@@ -8,6 +8,7 @@
 ##' @param verbose Logical. Indicate report extra information on progress or not.
 ##' @inheritParams biomaRt::getBM
 ##' @inheritParams biomaRt::useMart
+##' @return A converted ID character with the same order of parameter x.
 ##' @importFrom biomaRt getBM useMart
 ##' @export
 ##' @examples x<-c("Q04837","P0C0L4","P0C0L5","O75379","Q13068","A2MYD1","P60709","P30462","P30475","P30479")

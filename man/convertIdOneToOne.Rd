@@ -18,6 +18,9 @@ convertIdOneToOne(x, dataset = "hsapiens_gene_ensembl",
 
 \item{verbose}{Logical. Indicate report extra information on progress or not.}
 }
+\value{
+A converted ID character with the same order of parameter x.
+}
 \description{
 A function to convert ID based on the biomaRt package.
 }

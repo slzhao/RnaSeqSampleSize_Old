@@ -23,6 +23,9 @@ est_power_curve(n, w = 1, rho = 2, lambda0 = 5, phi0 = 1,
 
 \item{...}{other parameters for est_power function.}
 }
+\value{
+A list including parameters, sample size and power.
+}
 \description{
 A function to estitamete the power curve for differential expression analysis of RNA-seq data.
 }

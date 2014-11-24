@@ -10,11 +10,12 @@
 ##' @param minAveCount Only genes with avarage read counts above this value are used in the estimation of distribution.
 ##' @param convertId logical, whether to convert th gene Id into entrez gene Id. If set as True, then dataset and filters parameter should also be set.
 ##' @inheritParams convertIdOneToOne
+##' @return A DEGlist from edgeR package. 
 ##' @importFrom edgeR DGEList calcNormFactors estimateCommonDisp estimateTagwiseDisp
 ##' @export
 ##' @examples counts<-matrix(sample(1:1000,6000,replace=TRUE),ncol=6)
 ##' est_count_dispersion(counts=counts,group=rep(0,6))
-est_count_dispersion<-function(counts,group=rep(1,NCOL(counts)),subSampleNum=20,minAveCount=1,convertId=F,dataset="hsapiens_gene_ensembl",filters="hgnc_symbol") {
+est_count_dispersion<-function(counts,group=rep(1,NCOL(counts)),subSampleNum=20,minAveCount=1,convertId=FALSE,dataset="hsapiens_gene_ensembl",filters="hgnc_symbol") {
 #	require(edgeR)
 	set.seed(123)
 	subSample<-if (ncol(counts)<=subSampleNum) 1:ncol(counts) else sample(1:ncol(counts),subSampleNum)
@@ -52,6 +53,7 @@ est_count_dispersion<-function(counts,group=rep(1,NCOL(counts)),subSampleNum=20,
 ##' @param selectedGenes Optianal. Name of interesed genes. Only the read counts and dispersion distribution for these genes will be used in power estimation.
 ##' @param pathway Optianal. ID of interested KEGG pathway. Only the read counts and dispersion distribution for genes in this pathway will be used in power estimation.
 ##' @param species Optianal. Species of interested KEGG pathway.
+##' @return Average power or a list including count ,distribution and power for each gene.
 ##' @inheritParams est_power
 ##' @inheritParams sample_size
 ##' @import RnaSeqSampleSizeData
@@ -165,7 +167,6 @@ selecteGeneByPathway<-function(distributionObject,species="hsa",pathway="00010")
 }
 
 selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigits,minAveCount,maxAveCount,seed,selectedGenes,pathway,species) {
-#	distributionInPackage<-c("TCGA_BLCA","TCGA_BRCA","TCGA_CESC","TCGA_COAD","TCGA_HNSC","TCGA_KIRC","TCGA_LGG","TCGA_LUAD","TCGA_LUSC","TCGA_PRAD","TCGA_READ","TCGA_THCA","TCGA_UCEC")
 	distributionInPackage<-data(package="RnaSeqSampleSizeData")$results[,"Item"]
 	
 	if (is.character(distributionObject)) { #distributionInPackage
@@ -184,7 +185,14 @@ selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigi
 	if (missing(libSize)) {
 		libSize<-distributionObject$pseudo.lib.size
 	}
+	minAveCount<-max(1,minAveCount,min(round(distributionObject$pseudo.counts.mean))) #if minAveCount < distributionObject min count, make minAveCount as distributionObject min count
+	minAveCountCutDispersion<-min(distributionObject$tagwise.dispersion[which(round(distributionObject$pseudo.counts.mean)==minAveCount)])
+	
 	distributionObject$pseudo.counts.mean<-round(distributionObject$pseudo.counts.mean*(libSize/distributionObject$pseudo.lib.size))
+	
+	minAveCountCutDispersionScaled<-min(distributionObject$tagwise.dispersion[which(distributionObject$pseudo.counts.mean==minAveCount)])
+	distributionObject$tagwise.dispersion<-distributionObject$tagwise.dispersion*(minAveCountCutDispersion/minAveCountCutDispersionScaled)
+	
 	temp<-selectGene(distributionObject=distributionObject,repNumber=repNumber,dispersionDigits=dispersionDigits,minAveCount=minAveCount,maxAveCount=maxAveCount,seed=seed,selectedGenes=selectedGenes,pathway=pathway,species=species)
 	return(temp)
 }

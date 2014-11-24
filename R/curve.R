@@ -49,6 +49,7 @@ plot_power_curve<-function(result,cexLegend=1,type="b",xlab="Sample Size",ylab="
 ##' @param ... other parameters for est_power function. 
 ##' @inheritParams est_power
 ##' @inheritParams sample_size
+##' @return A list including parameters, sample size and power. 
 ##' @export
 ##' @examples \dontrun{
 ##' result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)

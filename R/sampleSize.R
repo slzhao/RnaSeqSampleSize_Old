@@ -22,6 +22,7 @@
 ##' @param phi0 Dispersion for prognostic genes.
 ##' @param showMessage Logical. Display the message in the estimation process.
 ##' @param storeProcess Logical. Store the power and n in sample size or power estimation process.
+##' @return Estimate sample size or a list including parameters and sample size in the process.
 ##' @export
 ##' @examples power<-0.8;rho<-2;lambda0<-5;phi0<-0.5;f<-0.01
 ##' sample_size(power=power, f=f,rho=rho, lambda0=lambda0, phi0=phi0)
@@ -32,7 +33,7 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 	beta<-1-power
 	alpha_star<-r1*f/((m-m1)*(1-f))
 	z_alpha<-qnorm(1-alpha_star/2, lower.tail=T)
-	z_beta<-qnorm(power, lower.tail=T)
+	z_beta<-qnorm(power, lower.tail=TRUE)
 	n_w<-( ( z_alpha + z_beta )^2* (1 + rho/w +phi0*lambda0*(1+rho^2)) )/ ( (rho-1)^2*lambda0 )
 	
 	start.point<-1
@@ -49,8 +50,8 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 		step.power<-6
 		if (lambda0>=lambda0AppCut) {
 			n_Exact<-uniroot.integer(est_power_model, c(start.point, end.point), w=w,k=k, rho=rho, 
-					lambda0=lambda0, phi0=phi0, beta=beta, alpha=alpha_star, pos.side=T,
-					step.up=T, step.power=step.power,print.steps=showMessage)
+					lambda0=lambda0, phi0=phi0, beta=beta, alpha=alpha_star, pos.side=TRUE,
+					step.up=TRUE, step.power=step.power,print.steps=showMessage)
 		} else {
 			n_Exact<-uniroot.integer(est_power_root, c(start.point, end.point), w=w,k=k, rho=rho, 
 					lambda0=lambda0, phi0=phi0, beta=beta, alpha=alpha_star, pos.side=TRUE,
@@ -76,6 +77,7 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 ##' 
 ##' @inheritParams sample_size
 ##' @inheritParams est_power_distribtuion
+##' @return Estimate sample size or a list including parameters and sample size in the process.
 ##' @export
 ##' @examples \dontrun{
 ##' #Please note here the parameter repNumber was very small (5) to make the example code faster.

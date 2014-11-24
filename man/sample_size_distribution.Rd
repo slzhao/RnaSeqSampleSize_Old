@@ -48,6 +48,9 @@ sample_size_distribution(power = 0.8, m = 10000, m1 = 100, f = 0.1,
 
 \item{species}{Optianal. Species of interested KEGG pathway.}
 }
+\value{
+Estimate sample size or a list including parameters and sample size in the process.
+}
 \description{
 A function to estitamete the sample size based on read counts and dispersion distribution in real data.
 }
