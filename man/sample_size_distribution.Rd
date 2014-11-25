@@ -7,7 +7,8 @@ sample_size_distribution(power = 0.8, m = 10000, m1 = 100, f = 0.1,
   k = 1, w = 1, rho = 2, showMessage = FALSE, storeProcess = FALSE,
   distributionObject, libSize, minAveCount = 5, maxAveCount = 2000,
   repNumber = 100, dispersionDigits = 1, seed = 123, selectedGenes,
-  pathway, species = "hsa")
+  pathway, species = "hsa", countFilterInRawDistribution = TRUE,
+  selectedGeneFilterByCount = FALSE)
 }
 \arguments{
 \item{power}{Power to detecte prognostic genes.}
@@ -47,6 +48,10 @@ sample_size_distribution(power = 0.8, m = 10000, m1 = 100, f = 0.1,
 \item{pathway}{Optianal. ID of interested KEGG pathway. Only the read counts and dispersion distribution for genes in this pathway will be used in power estimation.}
 
 \item{species}{Optianal. Species of interested KEGG pathway.}
+
+\item{countFilterInRawDistribution}{Logical. If the count filter will be applied on raw count distribution. If not,  count filter will be applied on libSize scaled count distribution.}
+
+\item{selectedGeneFilterByCount}{Logical. If the count filter will be applied to selected genes when selectedGenes parameter was used.}
 }
 \value{
 Estimate sample size or a list including parameters and sample size in the process.

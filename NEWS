@@ -1,3 +1,7 @@
+2014-11-23
+RnaSeqSampleSize 0.99.3:
+ * New parameter: countFilterInRawDistribution, selectedGeneFilterByCount;
+
 2014-11-18
 RnaSeqSampleSize 0.99.2:
  * The vignette was switched to a BiocStyle;

@@ -84,18 +84,18 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 ##' #We suggest repNumber should be at least set as 100 in real analysis.
 ##' sample_size_distribution(power=0.8,f=0.01,distributionObject="TCGA_READ",repNumber=5,showMessage=TRUE)
 ##' }
-sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rho=2,showMessage=FALSE,storeProcess=FALSE,distributionObject,libSize,minAveCount=5,maxAveCount=2000,repNumber=100,dispersionDigits=1,seed=123,selectedGenes,pathway,species="hsa"){
+sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rho=2,showMessage=FALSE,storeProcess=FALSE,distributionObject,libSize,minAveCount=5,maxAveCount=2000,repNumber=100,dispersionDigits=1,seed=123,selectedGenes,pathway,species="hsa",countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE){
 	
 	r1<-m1 * power
 	beta<-1-power
 	alpha_star<-r1*f/((m-m1)*(1-f))
 
 	start.point<-1
-	end.point<-200
+	end.point<-500
 	step.power<-5
 	
 	#process distribution
-	temp<-selectDistribution(distributionObject=distributionObject,libSize=libSize,repNumber=repNumber,dispersionDigits=dispersionDigits,minAveCount=minAveCount,maxAveCount=maxAveCount,seed=seed,selectedGenes=selectedGenes,pathway=pathway,species=species)
+	temp<-selectDistribution(distributionObject=distributionObject,libSize=libSize,repNumber=repNumber,dispersionDigits=dispersionDigits,minAveCount=minAveCount,maxAveCount=maxAveCount,seed=seed,selectedGenes=selectedGenes,pathway=pathway,species=species,countFilterInRawDistribution=countFilterInRawDistribution,selectedGeneFilterByCount=selectedGeneFilterByCount)
 	dispersionDistribution<-temp$selectedDispersion
 	countDistribution<-temp$selectedCount	
 	
