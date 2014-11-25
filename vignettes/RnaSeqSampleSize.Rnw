@@ -21,14 +21,15 @@ BiocStyle::latex()
 
 \begin{document}
 \title{RnaSeqSampleSize: Sample size estimation based on real RNA-seq data}
-\author{Shilin Zhao}
+\bioctitle[RnaSeqSampleSize: Sample size estimation based on real RNA-seq data]{RnaSeqSampleSize: Sample size estimation based on real RNA-seq data}
+\author{Shilin Zhao\footnote{zhaoshilin@gmail.com}}
 \maketitle
 \begin{abstract}
-In this vignette, we demonstrated the application of RnaSeqSampleSize as an sample size estimation tool for RNA-seq data.
+In this vignette, we demonstrated the application of \Biocpkg{RnaSeqSampleSize} as an sample size estimation tool for RNA-seq data.
 A user friendly web interface is also provided at \url{http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/} for researchers not familar with R.
 \\
 \\
-RnaSeqSampleSize package provides the following features:
+\Biocpkg{RnaSeqSampleSize} package provides the following features:
 \begin{itemize}
   \item Estimation of sample size or power by single read count and dispersion;
   \item Estimation of sample size or power by prior real data;
@@ -46,10 +47,10 @@ Sample size estimation is the most important issue in the design of RNA sequenci
 To solve these issues, we developed a sample size estimation method based on the distributions of gene read counts and dispersions from real data. Datasets from the user's preliminary experiments or the Cancer Genome Atlas (TCGA) can be used as reference. The read counts and their related dispersions will be selected randomly from the reference based on their distributions, and from that, the power and sample size will be estimated and summarized.
 
 \section{User friendly web interface}
-A user friendly web interface for RnaSeqSampleSize package is provided at \url{http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/}. Most of the functions in Examples section can be performed in this website.
+A user friendly web interface for \Biocpkg{RnaSeqSampleSize} package is provided at \url{http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/}. Most of the functions in Examples section can be performed in this website.
 
 \section{Examples}
-First we will load the RnaSeqSampleSize package.
+First we will load the \Biocpkg{RnaSeqSampleSize} package.
 <<prepareData,echo=T,cache=F>>=
 library(RnaSeqSampleSize)
 @
@@ -64,7 +65,7 @@ For example, if we are estimating the power of finding significant genes for RNA
   \item Maximal dispersion: 0.5;
   \item False discovery rate: 0.01;
 \end{itemize}
-As a result, the estimated power is 0.8 by \emph{est\_power} function. It means that we have 80\% probability to find the significant genes with 63 samples in each group.
+As a result, the estimated power is 0.8 by \Rfunction{est\_power} function. It means that we have 80\% probability to find the significant genes with 63 samples in each group.
 <<singlePower,echo=TRUE,tidy=TRUE,cache=T>>=
 example(est_power)
 @
@@ -77,13 +78,13 @@ For example, if we are estimating the sample size for RNA-seq data to achieve de
   \item Maximal dispersion: 0.5;
   \item False discovery rate: 0.01;
 \end{itemize}
-As a result, the estimated sample size is 63 by \emph{sample\_size} function. It means that if we want to have 80\% probability to find the significant genes, we need 63 samples in each group.
+As a result, the estimated sample size is 63 by \Rfunction{sample\_size} function. It means that if we want to have 80\% probability to find the significant genes, we need 63 samples in each group.
 <<singleSampleSize,each=TRUE,tidy=TRUE,cache=T>>=
 example(sample_size)
 @
 \subsection{Estimation of sample size or power by prior real data}
 \subsubsection{Power estimation with datasets in RnaSeqSampleSizeData package}
-RnaSeqSampleSizeData package contains the read counts and dispersion distribution from some real datasets and can be used as prior data for sample size or power estimation. They can be called with following names:
+\Biocexptpkg{RnaSeqSampleSizeData} package contains the read counts and dispersion distribution from some real datasets and can be used as prior data for sample size or power estimation. They can be called with following names:
 <<showData,echo=F,cache=F>>=
 data(package="RnaSeqSampleSizeData")$results[,"Item"]
 @
@@ -92,7 +93,7 @@ For example, if we are estimating the power of finding significant genes for RNA
 \begin{itemize}
   \item Number of samples in each group: 65;
   \item Minimal fold change between two groups: 2;
-  \item Prior data: TCGA READ data, stored in RnaSeqSampleSizeData package, can be used with name TCGA\_READ;
+  \item Prior data: TCGA READ data, stored in \Biocexptpkg{RnaSeqSampleSizeData} package, can be used with name TCGA\_READ;
   \item False discovery rate: 0.01;
 \end{itemize}
 Here we demonstrated the power estimation by prior data in three different situations.
@@ -116,14 +117,14 @@ powerDistribution<-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="
 mean(powerDistribution$power)
 @
 \end{itemize}
-As a result, we use \emph{est\_power\_distribtuion} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.77 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
+As a result, we use \Rfunction{est\_power\_distribtuion} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.78 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
 
 \subsubsection{Sample size estimation with datasets in RnaSeqSampleSizeData package}
 For example, if we are estimating the sample size for RNA-seq data to achieve desired power of finding significant genes, and we have the following parameters:
 \begin{itemize}
   \item Desired power of finding significant genes: 0.8;
   \item Minimal fold change between two groups: 2;
-  \item Prior data: TCGA READ data, stored in RnaSeqSampleSizeData package, can be used with name TCGA\_READ;
+  \item Prior data: TCGA READ data, stored in \Biocexptpkg{RnaSeqSampleSizeData} package, can be used with name TCGA\_READ;
   \item False discovery rate (FDR): 0.01;
 \end{itemize}
 As a result, we use \emph{sample\_size\_distribution} function and find the estimated sample size is 65 for random genes.
@@ -149,7 +150,7 @@ Then we are estimating the power of finding significant genes for RNA-seq data w
   \item Prior data: User's prior dataset with 10000 genes and 10 samples;
   \item False discovery rate: 0.01;
 \end{itemize}
-We will use \emph{est\_count\_dispersion} to estitamete the gene read count and dispersion distribution of user's prior dataset. And then \emph{est\_power\_distribtuion} function will be used to estimate power.
+We will use \Rfunction{est\_count\_dispersion} to estitamete the gene read count and dispersion distribution of user's prior dataset. And then \Rfunction{est\_power\_distribtuion} function will be used to estimate power.
 <<userDataSampleSize,echo=TRUE,tidy=TRUE,cache=TRUE>>=
 #Estitamete the gene read count and dispersion distribution
 dataMatrixDistribution<-est_count_dispersion(dataMatrix,group=c(rep(0,5),rep(1,5)))
@@ -172,10 +173,10 @@ result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
 result2<-est_power_curve(n=63, f=0.05, rho=2, lambda0=5, phi0=0.5)
 plot_power_curve(list(result1,result2))
 @
-As a result, the relation between power and sample size can be estimated by \emph{est\_power\_curve} function and the power curves can be generated by \emph{ plot\_power\_curve} function.
+As a result, the relation between power and sample size can be estimated by \Rfunction{est\_power\_curve} function and the power curves can be generated by \Rfunction{ plot\_power\_curve} function.
 
 \subsection{Optimization by power or sample size matrix}
-For example, if the budget is limited, we need to balance the number of replications and sequence depth. We can use the \emph{optimize\_parameter} function to find the relation between sample size, read counts, and estimated power. And then the optimized parameters can be determined.
+For example, if the budget is limited, we need to balance the number of replications and sequence depth. We can use the \Rfunction{optimize\_parameter} function to find the relation between sample size, read counts, and estimated power. And then the optimized parameters can be determined.
 <<optimazation,echo=TRUE,tidy=TRUE,cache=T>>=
 result<-optimize_parameter(fun=est_power,opt1="n",opt2="lambda0",opt1Value=c(3,5,10,15,20),opt2Value=c(1:5,10,20))
 @
