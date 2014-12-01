@@ -1,3 +1,9 @@
+2014-11-29
+RnaSeqSampleSize 0.99.4:
+ * Bug fixed: Max sample size for distribution based sample size estimation;
+ * Bug fixed: Keep consistent for all function names;
+ * Other improvement based on the comments from Bioconductor reviewer;
+
 2014-11-23
 RnaSeqSampleSize 0.99.3:
  * New parameter: countFilterInRawDistribution, selectedGeneFilterByCount;

@@ -76,7 +76,7 @@ sample_size<-function(power=0.8,m=20000, m1=200, f=0.1, k=1,w=1, rho=2, lambda0=
 ##' A function to estitamete the sample size based on read counts and dispersion distribution in real data.
 ##' 
 ##' @inheritParams sample_size
-##' @inheritParams est_power_distribtuion
+##' @inheritParams est_power_distribution
 ##' @return Estimate sample size or a list including parameters and sample size in the process.
 ##' @export
 ##' @examples \dontrun{
@@ -91,7 +91,7 @@ sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rh
 	alpha_star<-r1*f/((m-m1)*(1-f))
 
 	start.point<-1
-	end.point<-500
+	end.point<-800
 	step.power<-5
 	
 	#process distribution
@@ -99,7 +99,7 @@ sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rh
 	dispersionDistribution<-temp$selectedDispersion
 	countDistribution<-temp$selectedCount	
 	
-	n_Exact<-uniroot.integer(est_power_distribtuion_sampleSize, c(start.point, end.point), w=w,k=k, rho=rho, 
+	n_Exact<-uniroot.integer(est_power_distribution_sampleSize, c(start.point, end.point), w=w,k=k, rho=rho, 
 				beta=beta, alpha=alpha_star, dispersionDistribution=dispersionDistribution,countDistribution=countDistribution,
 				pos.side=TRUE,	step.up=TRUE, step.power=step.power,print.steps=showMessage)
 
@@ -114,6 +114,6 @@ sample_size_distribution<-function(power=0.8,m=10000, m1=100, f=0.1, k=1,w=1, rh
 	return(n_Exact)
 }
 
-est_power_distribtuion_sampleSize<-function(beta,...) {
-		return(mean(est_power_distribtuion_root(...))-(1-beta))
+est_power_distribution_sampleSize<-function(beta,...) {
+		return(mean(est_power_distribution_root(...))-(1-beta))
 }

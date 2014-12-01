@@ -39,7 +39,7 @@ After you have installed RnaSeqSampleSize package. You can enter R and use follo
 	#Examples for sample size estimation by single read count and dispersion
 	example(sample_size)
 	#Examples for power estimation by prior real data
-	example(est_power_distribtuion)
+	example(est_power_distribution)
 
 <a name="Change"/>
 # Change log #

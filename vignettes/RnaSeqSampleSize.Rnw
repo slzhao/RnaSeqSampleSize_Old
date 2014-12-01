@@ -100,24 +100,24 @@ Here we demonstrated the power estimation by prior data in three different situa
 \begin{itemize}
   \item If we are intesested in all genes, we can use repNumber parameter to specify random number of genes to perform power estimation;
 <<distributionPower1,echo=TRUE,tidy=TRUE,cache=T>>=
-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",repNumber=5)
+est_power_distribution(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",repNumber=5)
 @
 Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
   \item If we are only intesested in a list of genes, we can use selectedGenes parameter to specify the list of genes to perform power estimation;
 <<distributionPower2,echo=TRUE,tidy=TRUE,cache=TRUE>>=
 #Power estimation based on some interested genes. We use storeProcess=TRUE to return the details for all selected genes.
 selectedGenes<-names(TCGA_READ$pseudo.counts.mean)[c(1,3,5,7,9,12:30)]
-powerDistribution<-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",selectedGenes=selectedGenes,storeProcess=TRUE)
+powerDistribution<-est_power_distribution(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",selectedGenes=selectedGenes,storeProcess=TRUE)
 str(powerDistribution)
 mean(powerDistribution$power)
 @
   \item If we are only intesested a specified pathway, we can use pathway and species parameters to specify the genes in a pathway to perform power estimation.
 <<distributionPower3,echo=TRUE,tidy=TRUE,cache=T>>=
-powerDistribution<-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",pathway="00010",minAveCount=1,storeProcess=TRUE)
+powerDistribution<-est_power_distribution(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",pathway="00010",minAveCount=1,storeProcess=TRUE)
 mean(powerDistribution$power)
 @
 \end{itemize}
-As a result, we use \Rfunction{est\_power\_distribtuion} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.78 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
+As a result, we use \Rfunction{est\_power\_distribution} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.78 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
 
 \subsubsection{Sample size estimation with datasets in RnaSeqSampleSizeData package}
 For example, if we are estimating the sample size for RNA-seq data to achieve desired power of finding significant genes, and we have the following parameters:
@@ -150,12 +150,12 @@ Then we are estimating the power of finding significant genes for RNA-seq data w
   \item Prior data: User's prior dataset with 10000 genes and 10 samples;
   \item False discovery rate: 0.01;
 \end{itemize}
-We will use \Rfunction{est\_count\_dispersion} to estitamete the gene read count and dispersion distribution of user's prior dataset. And then \Rfunction{est\_power\_distribtuion} function will be used to estimate power.
+We will use \Rfunction{est\_count\_dispersion} to estitamete the gene read count and dispersion distribution of user's prior dataset. And then \Rfunction{est\_power\_distribution} function will be used to estimate power.
 <<userDataSampleSize,echo=TRUE,tidy=TRUE,cache=TRUE>>=
 #Estitamete the gene read count and dispersion distribution
 dataMatrixDistribution<-est_count_dispersion(dataMatrix,group=c(rep(0,5),rep(1,5)))
 #Power estimation by read count and dispersion distribution
-est_power_distribtuion(n=65,f=0.01,rho=2,distributionObject=dataMatrixDistribution,repNumber=5)
+est_power_distribution(n=65,f=0.01,rho=2,distributionObject=dataMatrixDistribution,repNumber=5)
 @
 As a result, we can find the estimated power is 0.82. Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
 
