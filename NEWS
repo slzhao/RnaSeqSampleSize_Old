@@ -1,5 +1,6 @@
-2014-11-29
+2014-12-03
 RnaSeqSampleSize 0.99.4:
+ * The user friendly web interface was improved;
  * Bug fixed: Max sample size for distribution based sample size estimation;
  * Bug fixed: Keep consistent for all function names;
  * Other improvement based on the comments from Bioconductor reviewer;

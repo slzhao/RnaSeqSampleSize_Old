@@ -33,6 +33,8 @@ optimize_parameter<-function(fun=est_power,opt1,opt2,opt1Value,opt2Value,main,..
 			main<-"Optimization for Power Estimation"
 		} else if (identical(fun,sample_size)) {
 			main<-"Optimization for Sample Size Estimation"
+		} else {
+			main<-"Optimization"
 		}
 	}
 	argList<-list(...)
