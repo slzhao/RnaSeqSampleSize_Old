@@ -53,8 +53,9 @@ est_count_dispersion<-function(counts,group=rep(1,NCOL(counts)),subSampleNum=20,
 ##' @param selectedGenes Optianal. Name of interesed genes. Only the read counts and dispersion distribution for these genes will be used in power estimation.
 ##' @param pathway Optianal. ID of interested KEGG pathway. Only the read counts and dispersion distribution for genes in this pathway will be used in power estimation.
 ##' @param species Optianal. Species of interested KEGG pathway.
-##' @param countFilterInRawDistribution Logical. If the count filter will be applied on raw count distribution. If not,  count filter will be applied on libSize scaled count distribution.
+##' @param countFilterInRawDistribution Logical. If the count filter will be applied on raw count distribution. If not, count filter will be applied on libSize scaled count distribution.
 ##' @param selectedGeneFilterByCount Logical. If the count filter will be applied to selected genes when selectedGenes parameter was used.
+##' @param removedGene0Power Logical. When selectedGenes or pathway are used, some genes may have read count less than minAveCount and will be removed by count filter. This parameter indicates if they will be used as 0 power in power estimation. If not, they will not be used in power estimation.
 ##' @return Average power or a list including count ,distribution and power for each gene.
 ##' @inheritParams est_power
 ##' @inheritParams sample_size
@@ -73,19 +74,26 @@ est_count_dispersion<-function(counts,group=rep(1,NCOL(counts)),subSampleNum=20,
 ##' powerDistribution<-est_power_distribution(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",pathway="00010",minAveCount=1,storeProcess=TRUE)
 ##' mean(powerDistribution$power)
 ##' }
-est_power_distribution<-function(n,f=0.1,m=10000,m1=100, w=1, rho=2,repNumber=100,dispersionDigits=1,distributionObject,libSize,minAveCount=5,maxAveCount=2000,seed=123,selectedGenes,pathway,species="hsa",storeProcess=FALSE,countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE) {
-	temp<-selectDistribution(distributionObject=distributionObject,libSize=libSize,repNumber=repNumber,dispersionDigits=dispersionDigits,minAveCount=minAveCount,maxAveCount=maxAveCount,seed=seed,selectedGenes=selectedGenes,pathway=pathway,species=species,countFilterInRawDistribution=countFilterInRawDistribution,selectedGeneFilterByCount=selectedGeneFilterByCount)
+est_power_distribution<-function(n,f=0.1,m=10000,m1=100, w=1, rho=2,repNumber=100,dispersionDigits=1,distributionObject,libSize,minAveCount=5,maxAveCount=2000,seed=123,selectedGenes,pathway,species="hsa",storeProcess=FALSE,countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE,removedGene0Power=TRUE) {
+	temp<-selectDistribution(distributionObject=distributionObject,libSize=libSize,repNumber=repNumber,dispersionDigits=dispersionDigits,minAveCount=minAveCount,maxAveCount=maxAveCount,seed=seed,selectedGenes=selectedGenes,pathway=pathway,species=species,countFilterInRawDistribution=countFilterInRawDistribution,
+			selectedGeneFilterByCount=selectedGeneFilterByCount,removedGene0Power=removedGene0Power)
 	dispersionDistribution<-temp$selectedDispersion
 	countDistribution<-temp$selectedCount
 	
 	#determin alpha from most consertive power
-	phi0<-max(dispersionDistribution)
-	lambda0<-min(countDistribution)
+	phi0<-temp$maxDispersionDistribution
+	lambda0<-max(min(countDistribution),1)
 	leastPower<-est_power(n=n, w=w, rho=rho,lambda0=lambda0,phi0=phi0)
 	alpha<-leastPower*m1*f/((m-m1)*(1-f))
 	
 	#power distribution
 	powerDistribution<-est_power_distribution_root(n=n,alpha=alpha,w=w, rho=rho,dispersionDistribution=dispersionDistribution,countDistribution=countDistribution)
+	
+	#Add removed genes as 0 power
+	if (removedGene0Power) {
+		powerDistribution<-c(powerDistribution,rep(0,(temp$inputGeneNumber-length(powerDistribution))))
+	}
+	
 	if (storeProcess) {
 		return(list(power=powerDistribution,count=countDistribution,dispersion=dispersionDistribution))
 	} else {
@@ -109,34 +117,6 @@ est_power_distribution_root<-function(n,alpha=0.05, w=1,k=1, rho=2, error=0.001,
 	return(powerDistribution)
 }
 
-selectGene<-function(distributionObject,repNumber=100,dispersionDigits=1,minAveCount=1,maxAveCount=2000,seed=123,selectedGenes,pathway,species="hsa",countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE) {
-	
-	distributionObject$pseudo.counts.mean[distributionObject$pseudo.counts.mean>=maxAveCount]<-maxAveCount
-
-	genesLargerThanMinCount<-which(distributionObject$pseudo.counts.mean>=minAveCount)
-	if (!missing(pathway) | !missing(selectedGenes)) {
-		if (!missing(pathway)) {
-			selectedGenes<-selecteGeneByPathway(distributionObject=distributionObject,species=species,pathway=pathway)
-		} else { #!missing(selectedGenes)
-			selectedGenes<-selecteGeneByName(selectedGenes,distributionObject)
-		}
-		temp<-intersect(selectedGenes,genesLargerThanMinCount)
-		if (length(temp)==0) {
-			stop(paste0("No selectedGenes have average read count larger than selected minAveCount:",minAveCount,"\n"))
-		} else if (length(setdiff(selectedGenes,temp)>0)) {
-			warning(paste0(length(setdiff(selectedGenes,temp))," selectedGenes have average read count less than selected minAveCount:",minAveCount,", discard them for further analysis\n"))
-		}
-		selectedGenes<-temp
-	} else {
-		set.seed(seed)
-		selectedGenes<-sample(genesLargerThanMinCount,repNumber)
-	}
-	countDistribution<-distributionObject$pseudo.counts.mean[selectedGenes]
-	dispersionDistribution<-round(distributionObject$tagwise.dispersion[selectedGenes],dispersionDigits)
-	dispersionDistribution[dispersionDistribution==0]<-10^-dispersionDigits
-	return(list(selectedCount=countDistribution,selectedDispersion=dispersionDistribution))
-}
-
 selecteGeneByName<-function(selectedGenes,distributionObject) {
 	result<-which(names(distributionObject$pseudo.counts.mean) %in% selectedGenes)
 	if (length(result)>0) {
@@ -151,10 +131,6 @@ selecteGeneByName<-function(selectedGenes,distributionObject) {
 }
 
 selecteGeneByPathway<-function(distributionObject,species="hsa",pathway="00010") {
-	#	require(KEGG.db)
-#	keggpathway2gene <- as.list(KEGGPATHID2EXTID)
-#	keggpathway2gene<-keggpathway2gene[names(keggpathway2gene)[grep(specis,names(keggpathway2gene))]]
-#	selectedGenes<-keggpathway2gene[[paste0(specis,pathway)]]
 	selectedGenes<-keggLink("genes",paste0(species,pathway))
 	selectedGenes<-gsub(paste0(species,":"),"",selectedGenes)
 	if ("converted.entrezgene" %in% names(distributionObject)) {
@@ -168,7 +144,7 @@ selecteGeneByPathway<-function(distributionObject,species="hsa",pathway="00010")
 	return(result)
 }
 
-selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigits,minAveCount,maxAveCount,seed,selectedGenes,pathway,species,countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE) {
+selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigits,minAveCount,maxAveCount,seed,selectedGenes,pathway,species,countFilterInRawDistribution=TRUE,selectedGeneFilterByCount=FALSE,removedGene0Power=TRUE) {
 	distributionInPackage<-data(package="RnaSeqSampleSizeData")$results[,"Item"]
 	
 	if (is.character(distributionObject)) { #distributionInPackage
@@ -200,6 +176,10 @@ selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigi
 	}
 	distributionObject$pseudo.counts.mean[distributionObject$pseudo.counts.mean>=maxAveCount]<-maxAveCount
 	
+	#Dispersion distribution
+	dispersionDistribution<-round(distributionObject$tagwise.dispersion,dispersionDigits)
+	dispersionDistribution[dispersionDistribution==0]<-10^-dispersionDigits
+	
 	#selectedGenes or not
 	if (!missing(pathway) | !missing(selectedGenes)) {
 		if (!missing(pathway)) {
@@ -216,18 +196,24 @@ selectDistribution<-function(distributionObject,libSize,repNumber,dispersionDigi
 		if (length(temp)==0) {
 			stop(paste0("No selectedGenes have average read count larger than selected minAveCount:",minAveCount,"\n"))
 		} else if (length(setdiff(selectedGenes,temp)>0)) {
-			warning(paste0(length(setdiff(selectedGenes,temp))," selectedGenes have average read count less than selected minAveCount:",minAveCount,", discard them for further analysis\n"))
+			if (removedGene0Power) {
+				warning(paste0(length(setdiff(selectedGenes,temp))," selectedGenes have average read count less than selected minAveCount:",minAveCount,", they will have 0 power in power or sample size estimation\n"))
+			} else {
+				warning(paste0(length(setdiff(selectedGenes,temp))," selectedGenes have average read count less than selected minAveCount:",minAveCount,", discard them for further analysis\n"))
+			}
 		}
+		repNumber<-length(selectedGenes)
+		maxDispersionDistribution<-max(dispersionDistribution[selectedGenes])
 		selectedGenes<-temp
 	} else {
 		set.seed(seed)
 		selectedGenes<-sample(genesLargerThanMinCount,repNumber)
+		maxDispersionDistribution<-max(dispersionDistribution[selectedGenes])
 	}
 	
 	#return selected genes' distribution
 	countDistribution<-distributionObject$pseudo.counts.mean[selectedGenes]
-	countDistribution[countDistribution==0]<-1
-	dispersionDistribution<-round(distributionObject$tagwise.dispersion[selectedGenes],dispersionDigits)
-	dispersionDistribution[dispersionDistribution==0]<-10^-dispersionDigits
-	return(list(selectedCount=countDistribution,selectedDispersion=dispersionDistribution))
+#	countDistribution[countDistribution==0]<-1
+	dispersionDistribution<-dispersionDistribution[selectedGenes]
+	return(list(selectedCount=countDistribution,selectedDispersion=dispersionDistribution,inputGeneNumber=repNumber,maxDispersionDistribution=maxDispersionDistribution))
 }

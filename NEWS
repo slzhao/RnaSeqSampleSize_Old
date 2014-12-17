@@ -1,3 +1,7 @@
+2014-12-15
+RnaSeqSampleSize 0.99.5:
+ * Minor changes for genes with less than 1 read count;
+ 
 2014-12-03
 RnaSeqSampleSize 0.99.4:
  * The user friendly web interface was improved;

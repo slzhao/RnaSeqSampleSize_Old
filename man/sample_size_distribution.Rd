@@ -49,7 +49,7 @@ sample_size_distribution(power = 0.8, m = 10000, m1 = 100, f = 0.1,
 
 \item{species}{Optianal. Species of interested KEGG pathway.}
 
-\item{countFilterInRawDistribution}{Logical. If the count filter will be applied on raw count distribution. If not,  count filter will be applied on libSize scaled count distribution.}
+\item{countFilterInRawDistribution}{Logical. If the count filter will be applied on raw count distribution. If not, count filter will be applied on libSize scaled count distribution.}
 
 \item{selectedGeneFilterByCount}{Logical. If the count filter will be applied to selected genes when selectedGenes parameter was used.}
 }

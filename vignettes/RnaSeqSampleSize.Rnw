@@ -82,7 +82,7 @@ As a result, the estimated sample size is 63 by \Rfunction{sample\_size} functio
 <<singleSampleSize,each=TRUE,tidy=TRUE,cache=T>>=
 example(sample_size)
 @
-\subsection{Estimation of sample size or power by prior real data}
+\subsection{Estimation of sample size or power by reference data}
 \subsubsection{Power estimation with datasets in RnaSeqSampleSizeData package}
 \Biocexptpkg{RnaSeqSampleSizeData} package contains the read counts and dispersion distribution from some real datasets and can be used as prior data for sample size or power estimation. They can be called with following names:
 <<showData,echo=F,cache=F>>=
@@ -124,7 +124,7 @@ powerDistribution<-est_power_distribution(n=65,f=0.01,rho=2,
 mean(powerDistribution$power)
 @
 \end{itemize}
-As a result, we use \Rfunction{est\_power\_distribution} function and find the estimated power is 0.81 for random genes, 0.77 for specified gene list, and 0.78 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
+As a result, we use \Rfunction{est\_power\_distribution} function and find the estimated power is 0.91 for random genes, 0.81 for specified gene list, and 0.77 for genes in Glycolysis and Gluconeogenesis (pathway 00010) pathway.
 
 \subsubsection{Sample size estimation with datasets in RnaSeqSampleSizeData package}
 For example, if we are estimating the sample size for RNA-seq data to achieve desired power of finding significant genes, and we have the following parameters:
@@ -134,7 +134,7 @@ For example, if we are estimating the sample size for RNA-seq data to achieve de
   \item Prior data: TCGA READ data, stored in \Biocexptpkg{RnaSeqSampleSizeData} package, can be used with name TCGA\_READ;
   \item False discovery rate (FDR): 0.01;
 \end{itemize}
-As a result, we use \emph{sample\_size\_distribution} function and find the estimated sample size is 65 for random genes.
+As a result, we use \emph{sample\_size\_distribution} function and find the estimated sample size is 41 for random genes.
 <<distributionSampleSize,echo=TRUE,tidy=FALSE,cache=T>>=
 sample_size_distribution(power=0.8,f=0.01,distributionObject="TCGA_READ",
                          repNumber=5,showMessage=TRUE)
@@ -167,7 +167,7 @@ dataMatrixDistribution<-est_count_dispersion(dataMatrix,
 est_power_distribution(n=65,f=0.01,rho=2,
                        distributionObject=dataMatrixDistribution,repNumber=5)
 @
-As a result, we can find the estimated power is 0.82. Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
+As a result, we can find the estimated power is 0.91. Please note here the parameter repNumber was very small (5) to make the example code faster. We suggest repNumber should be at least set as 100 in real analysis.
 
 \subsection{Power curve visualization}
 For example, if we are going to compare the power of finding significant genes for different false discovery rate, and we have the following parameters:

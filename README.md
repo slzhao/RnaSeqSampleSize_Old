@@ -13,7 +13,7 @@ To solve these issues, we developed a sample size estimation method based on the
 
 <a name="web"/>
 # User friendly web interface #
-A user friendly web interface for RnaSeqSampleSize package is provided at \url{http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/}. Most of the functions in Examples section can be performed in this website.
+A user friendly web interface for RnaSeqSampleSize package is provided at [CQS website](http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/). Most of the features in Example section can be found in this website.
 
 
 <a name="download"/>
@@ -27,7 +27,7 @@ You can download and install RnaSeqSampleSize package from [github](https://gith
 
 <a name="example"/>
 # Example #
-After you have installed RnaSeqSampleSize package. You can enter R and use following R codes to see the examples for it.
+After you have installed RnaSeqSampleSize package. You can enter R and use following R codes to view documents and perform examples for it.
 	
 	#Load package
 	library("RnaSeqSampleSize")
@@ -35,7 +35,14 @@ After you have installed RnaSeqSampleSize package. You can enter R and use follo
 	browseVignettes(package="RnaSeqSampleSize")
 	#View help files
 	?sample_size
-	#Examples for sample size estimation by single read count and dispersion
-	example(sample_size)
-	#Examples for power estimation by prior real data
-	example(est_power_distribution)
+	#Examples for sample size or power estimation by single read count and dispersion
+	sample_size(power=0.8, f=0.01,rho=2, lambda0=5, phi0=0.5)
+	est_power(n=63, rho=2, lambda0=5, phi0=0.5,f=0.01)
+	#Examples for power estimation by prior real data, may use 3 minutes
+	est_power_distribution(n=65,f=0.01,rho=2,distributionObject="TCGA_READ",repNumber=5)
+	sample_size_distribution(power=0.918,f=0.01,rho=2,distributionObject="TCGA_READ",repNumber=5)
+	#Examples for power curve generation
+	result1<-est_power_curve(n=63, f=0.01, rho=2, lambda0=5, phi0=0.5)
+	result2<-est_power_curve(n=63, f=0.05, rho=2, lambda0=5, phi0=0.5)
+	plot_power_curve(list(result1,result2))
+

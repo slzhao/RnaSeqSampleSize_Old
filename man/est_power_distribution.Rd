@@ -7,7 +7,8 @@ est_power_distribution(n, f = 0.1, m = 10000, m1 = 100, w = 1,
   rho = 2, repNumber = 100, dispersionDigits = 1, distributionObject,
   libSize, minAveCount = 5, maxAveCount = 2000, seed = 123, selectedGenes,
   pathway, species = "hsa", storeProcess = FALSE,
-  countFilterInRawDistribution = TRUE, selectedGeneFilterByCount = FALSE)
+  countFilterInRawDistribution = TRUE, selectedGeneFilterByCount = FALSE,
+  removedGene0Power = TRUE)
 }
 \arguments{
 \item{n}{Numer of samples.}
@@ -44,9 +45,11 @@ est_power_distribution(n, f = 0.1, m = 10000, m1 = 100, w = 1,
 
 \item{storeProcess}{Logical. Store the power and n in sample size or power estimation process.}
 
-\item{countFilterInRawDistribution}{Logical. If the count filter will be applied on raw count distribution. If not,  count filter will be applied on libSize scaled count distribution.}
+\item{countFilterInRawDistribution}{Logical. If the count filter will be applied on raw count distribution. If not, count filter will be applied on libSize scaled count distribution.}
 
 \item{selectedGeneFilterByCount}{Logical. If the count filter will be applied to selected genes when selectedGenes parameter was used.}
+
+\item{removedGene0Power}{Logical. When selectedGenes or pathway are used, some genes may have read count less than minAveCount and will be removed by count filter. This parameter indicates if they will be used as 0 power in power estimation. If not, they will not be used in power estimation.}
 }
 \value{
 Average power or a list including count ,distribution and power for each gene.
