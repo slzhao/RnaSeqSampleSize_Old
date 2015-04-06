@@ -12,8 +12,8 @@
 ##' @importFrom biomaRt getBM useMart
 ##' @export
 ##' @examples x<-c("Q04837","P0C0L4","P0C0L5","O75379","Q13068","A2MYD1","P60709","P30462","P30475","P30479")
-##' convertIdOneToOne(x,filters="uniprot_swissprot_accession",verbose=TRUE)
-convertIdOneToOne<-function(x,dataset="hsapiens_gene_ensembl",filters="uniprot_swissprot_accession",attributes =c(filters,"entrezgene"),verbose=FALSE) {
+##' convertIdOneToOne(x,filters="uniprot_swissprot",verbose=TRUE)
+convertIdOneToOne<-function(x,dataset="hsapiens_gene_ensembl",filters="uniprot_swissprot",attributes =c(filters,"entrezgene"),verbose=FALSE) {
 	if (verbose) {
 		cat("Now conectting with ensembl. Internet acess is needed and it may use 30 seconds.\n")
 		flush.console()

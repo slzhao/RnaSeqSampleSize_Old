@@ -4,7 +4,7 @@
 \title{convertId}
 \usage{
 convertIdOneToOne(x, dataset = "hsapiens_gene_ensembl",
-  filters = "uniprot_swissprot_accession", attributes = c(filters,
+  filters = "uniprot_swissprot", attributes = c(filters,
   "entrezgene"), verbose = FALSE)
 }
 \arguments{
