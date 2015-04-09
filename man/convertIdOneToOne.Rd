@@ -29,6 +29,6 @@ A function to convert ID based on the biomaRt package..
 }
 \examples{
 x<-c("Q04837","P0C0L4","P0C0L5","O75379","Q13068","A2MYD1","P60709","P30462","P30475","P30479")
-convertIdOneToOne(x,filters="uniprot_swissprot_accession",verbose=TRUE)
+convertIdOneToOne(x,filters="uniprot_swissprot",verbose=TRUE)
 }
 
