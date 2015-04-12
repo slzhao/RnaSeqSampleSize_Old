@@ -50,7 +50,7 @@ optimize_parameter<-function(fun=est_power,opt1,opt2,opt1Value,opt2Value,main,..
 	colnames(result)<-opt1Value
 	row.names(result)<-opt2Value
 #	heatmap3(result,Colv=NA,Rowv=NA,xlab=opt1,ylab=opt2,scale="n",col=heat.colors(1024),cexCol=1,cexRow=1,las=1,main=main)
-	heatmap3(result,Colv=NA,Rowv=NA,xlab=opt1,ylab=opt2,scale="n",col=matlab::jet.colors(1000),cexCol=1,cexRow=1,las=1,main=main)
+	heatmap3(result,Colv=NA,Rowv=NA,xlab=opt1,ylab=opt2,scale="n",col=matlab::jet.colors(1000),cexCol=1,cexRow=1,lasCol=1,lasRow=1,main=main)
 	return(result)
 }
 

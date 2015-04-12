@@ -1,3 +1,11 @@
+2015-04-12
+RnaSeqSampleSize 0.99.8:
+ * Fix a bug in example of optimize_parameter function, which was caused by update of heatmap3 package. Thanks Dan.
+
+2015-04-06
+RnaSeqSampleSize 0.99.7:
+ * Fix a bug in example of convertId function, which was caused by update of BioMart database. Thanks Dan.
+
 2014-12-15
 RnaSeqSampleSize 0.99.5:
  * Minor changes for genes with less than 1 read count;

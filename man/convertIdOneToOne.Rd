@@ -4,8 +4,8 @@
 \title{convertId}
 \usage{
 convertIdOneToOne(x, dataset = "hsapiens_gene_ensembl",
-  filters = "uniprot_swissprot", attributes = c(filters,
-  "entrezgene"), verbose = FALSE)
+  filters = "uniprot_swissprot", attributes = c(filters, "entrezgene"),
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{the Ids need to be converted.}

@@ -1,8 +1,8 @@
 Package: RnaSeqSampleSize
 Type: Package
 Title: RnaSeqSampleSize
-Version: 0.99.7
-Date: 2014-12-15
+Version: 0.99.8
+Date: 2015-04-12
 Author: Shilin Zhao, Chung-I Li, Yan Guo, Quanhu Sheng, Yu Shyr
 Maintainer: Shilin Zhao <zhaoshilin@gmail.com>
 Description: RnaSeqSampleSize package provides a sample size calculation method
