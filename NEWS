@@ -1,102 +1,191 @@
-2015-04-12
-RnaSeqSampleSize 0.99.8:
- * Fix a bug in example of optimize_parameter function, which was caused by update of heatmap3 package. Thanks Dan.
+CHANGES IN VERSION 0.99.8 2015-04-12
+------------------------------------
 
-2015-04-06
-RnaSeqSampleSize 0.99.7:
- * Fix a bug in example of convertId function, which was caused by update of BioMart database. Thanks Dan.
+BUG FIXES
 
-2014-12-15
-RnaSeqSampleSize 0.99.5:
- * Minor changes for genes with less than 1 read count;
+    o Fix a bug in example of optimize_parameter function, which was caused by update of heatmap3 package. Thanks Dan.
+
+
+CHANGES IN VERSION 0.99.7 2015-04-06
+------------------------------------
+
+BUG FIXES
+
+    o Fix a bug in example of convertId function, which was caused by update of BioMart database. Thanks Dan.
+
+CHANGES IN VERSION 0.99.5 2015-04-06
+------------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Minor changes for genes with less than 1 read count;
  
-2014-12-03
-RnaSeqSampleSize 0.99.4:
- * The user friendly web interface was improved;
- * Bug fixed: Max sample size for distribution based sample size estimation;
- * Bug fixed: Keep consistent for all function names;
- * Other improvement based on the comments from Bioconductor reviewer;
+CHANGES IN VERSION 0.99.4
+-------------------------
 
-2014-11-23
-RnaSeqSampleSize 0.99.3:
- * New parameter: countFilterInRawDistribution, selectedGeneFilterByCount;
- * Other improvement based on the comments from Bioconductor reviewer;
+NEW FEATURES
 
-2014-11-18
-RnaSeqSampleSize 0.99.2:
- * The vignette was switched to a BiocStyle;
- * Other improvement based on the comments from Bioconductor reviewer;
+    o The user friendly web interface was improved
 
-2014-10-19
-RnaSeqSampleSize 0.99.1:
- * Parameter was used to determine the power of genes below minAveCount;
- * Some recommendations from BiocCheck were improved;
+BUG FIXES
 
-2014-10-16
-RnaSeqSampleSize 0.99.0:
- * Submit to Bioconductor.
+    o Bug fixed: Max sample size for distribution based sample size estimation;
+    o Bug fixed: Keep consistent for all function names;
 
-2014-10-15
-RnaSeqSampleSize 0.5.0:
- * The datasets from TCGA were moved to RnaSeqSampleSizeData package;
- * The examples were improved;
- * The vignette was generated;
+SIGNIFICANT USER-VISIBLE CHANGES
 
-2014-10-10
-RnaSeqSampleSize 0.4.0:
- * Rcpp package was used to make some functions faster;
- * The package structure was improved;
- * The web interface was improved;
+    o Other improvement based on the comments from Bioconductor reviewer;
 
-2014-08-01
-RnaSeqSampleSize 0.3.0:
- * Beta approximate method was improved and used in most of the cases;
- * Read count and dispersion distribution estimation function was improved;
- * Estimation power or sample size by read count and dispersion distribution was improved.
+CHANGES IN VERSION 0.99.3 2014-11-23
+------------------------------------
 
-2014-06-01
-RnaSeqSampleSize 0.2.0:
- * The function of estimation power or sample size by read count and dispersion distribution was imported and improved.
+SIGNIFICANT USER-VISIBLE CHANGES
 
-2014-03-30
-RnaSeqSampleSize 0.1.7:
- * An approximate estimation method was used to decrease the running time when average read count (lambda0) was larger than 20;
- * A plotting power curve function plot_power_curve was provided;
 
-2014-03-19
-RnaSeqSampleSize 0.1.6:
- * The code was improved to fit the web interface;
- * The function est_power was provided for power estimation;
- * A bug was fixed;
+    o New parameter: countFilterInRawDistribution, selectedGeneFilterByCount;
+    o Other improvement based on the comments from Bioconductor reviewer;
 
-2014-03-16
-RnaSeqSampleSize 0.1.5:
- * The C code for R function dnbinom was improved to decrease the running time greatly;
- * The powers for different N in estimating sample size were returned to prepare power curve;
+CHANGES IN VERSION 0.99.2
+-------------------------
 
-2014-03-01
-RnaSeqSampleSize 0.1.4:
- * A user friendly web interface was provided at http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/;
+SIGNIFICANT USER-VISIBLE CHANGES
 
-2014-02-17
-RnaSeqSampleSize 0.1.3:
- * The algorithm was improved to decrease the memory usage;
+    o The vignette was switched to a BiocStyle;
+    o Other improvement based on the comments from Bioconductor reviewer;
 
-2014-02-04
-RnaSeqSampleSize 0.1.2:
- * A more detail parameter to sample size table was provided;
- * The algorithm was improved to decrease the running time and memory usage;
+CHANGES IN VERSION 0.99.1 2014-10-19
+------------------------------------
 
-2014-01-27
-RnaSeqSampleSize 0.1.1:
- * The algorithm was improved to decrease the running time greatly;
+SIGNIFICANT USER-VISIBLE CHANGES
 
-2014-01-24
-RnaSeqSampleSize 0.1.0:
- * A more detail parameter to sample size table was provided to make sample size estimation faster;
- * An estimated time to perform sample size estimation will be displayed;
- * A bug fixed when sample size N equals to 1;
 
-2014-01-10
-RnaSeqSampleSize 0.0.1:
- * First version.
+    o Parameter was used to determine the power of genes below minAveCount;
+    o Some recommendations from BiocCheck were improved;
+
+CHANGES IN VERSION 0.99.0 2014-10-16
+------------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+
+    o Submit to Bioconductor.
+
+CHANGES IN VERSION 0.5.0 2014-10-15
+-----------------------------------
+
+NEW FEATURES
+
+    o The datasets from TCGA were moved to RnaSeqSampleSizeData package;
+    o The examples were improved;
+    o The vignette was generated;
+
+CHANGES IN VERSION 0.4.0 2014-10-10
+-----------------------------------
+
+NEW FEATURES
+
+    o Rcpp package was used to make some functions faster;
+    o The package structure was improved;
+    o The web interface was improved;
+
+CHANGES IN VERSION 0.3.0 2014-08-01
+-----------------------------------
+
+NEW FEATURES
+
+    o Beta approximate method was improved and used in most of the cases;
+    o Read count and dispersion distribution estimation function was improved;
+    o Estimation power or sample size by read count and dispersion distribution was improved.
+
+RnaSeqSampleSize 0.2.0 2014-06-01
+---------------------------------
+
+NEW FEATURES
+
+    o The function of estimation power or sample size by read count and dispersion distribution was imported and improved.
+
+CHANGES IN VERSION 0.1.7 2014-03-30
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o An approximate estimation method was used to decrease the running time when average read count (lambda0) was larger than 20;
+
+NEW FEATURES
+
+    o A plotting power curve function plot_power_curve was provided;
+
+CHANGES IN VERSION 0.1.6 2014-03-19
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The code was improved to fit the web interface;
+
+NEW FEATURES
+
+    o The function est_power was provided for power estimation;
+
+BUG FIXES
+
+    o A bug was fixed;
+
+CHANGES IN VERSION 0.1.5 2014-03-16
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The C code for R function dnbinom was improved to decrease the running time greatly;
+    o The powers for different N in estimating sample size were returned to prepare power curve;
+
+CHANGES IN VERSION 0.1.4 2014-03-01
+------------------------------------
+
+NEW FEATURES
+
+    o A user friendly web interface was provided at http://cqs.mc.vanderbilt.edu/shiny/RnaSeqSampleSize/;
+
+CHANGES IN VERSION 0.1.3 2014-02-17
+-----------------------------------
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The algorithm was improved to decrease the memory usage;
+
+
+CHANGES IN VERSION 0.1.2 2014-02-04
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o A more detail parameter to sample size table was provided;
+    o The algorithm was improved to decrease the running time and memory usage;
+
+CHANGES IN VERSION 0.1.1 2014-02-04
+-----------------------------------
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The algorithm was improved to decrease the running time greatly;
+
+CHANGES IN VERSION 0.1.0 2014-01-24
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o A more detail parameter to sample size table was provided to make sample size estimation faster;
+    o An estimated time to perform sample size estimation will be displayed;
+
+BUG FIXES
+
+    o A bug fixed when sample size N equals to 1;
+
+CHANGES IN VERSION 0.0.1 2014-01-10
+-----------------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+
+    o First version.
